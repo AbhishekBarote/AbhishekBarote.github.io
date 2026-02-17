@@ -71,7 +71,8 @@ export const Interface = () => {
           {
             name: form.name,
             email: form.email,
-            title: "Portfolio Inquiry", 
+            title: "Portfolio Inquiry",
+            message: form.message,
           },
           'NV69a_UPBUdZchKpd'
         ).catch(err => {
