@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { services, technologies, experiences, projects } from "../constants";
 import { useState, useEffect } from "react";
 
+import emailjs from '@emailjs/browser';
+
 const Section = (props) => {
   const { children } = props;
 
@@ -35,6 +37,7 @@ export const Interface = () => {
     email: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,10 +46,38 @@ export const Interface = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, email, message } = form;
-    const subject = `Portfolio Contact from ${name}`;
-    const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-    window.location.href = `mailto:abhishekbarote@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setLoading(true);
+
+    emailjs
+      .send(
+        'service_Abhi456',
+        'template_66fneyc',
+        {
+          from_name: form.name,
+          to_name: "Abhishek",
+          from_email: form.email,
+          to_email: "abhishekbarote@gmail.com",
+          message: form.message,
+        },
+        'NV69a_UPBUdZchKpd'
+      )
+      .then(
+        () => {
+          setLoading(false);
+          alert("Thank you. I will get back to you as soon as possible.");
+
+          setForm({
+            name: "",
+            email: "",
+            message: "",
+          });
+        },
+        (error) => {
+          setLoading(false);
+          console.error(error);
+          alert("Ahh, something went wrong. Please try again.");
+        }
+      );
   };
 
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -271,7 +302,9 @@ export const Interface = () => {
                         required
                     />
                </label>
-               <button type="submit" className="cta-btn">Send</button>
+               <button type="submit" disabled={loading} className="cta-btn">
+                  {loading ? "Sending..." : "Send"}
+               </button>
             </form>
         </div>
       </Section>
