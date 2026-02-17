@@ -63,6 +63,18 @@ export const Interface = () => {
       )
       .then(
         () => {
+          // Success for notification, now send auto-reply
+          emailjs.send(
+            'service_Abhi456',
+            'template_2t5af3p',
+            {
+              name: form.name,
+              email: form.email,
+              title: "Portfolio Inquiry", 
+            },
+            'NV69a_UPBUdZchKpd'
+          );
+
           setLoading(false);
           alert("Thank you. I will get back to you as soon as possible.");
 
