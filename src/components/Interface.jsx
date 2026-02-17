@@ -75,7 +75,7 @@ export const Interface = () => {
         (error) => {
           setLoading(false);
           console.error(error);
-          alert("Ahh, something went wrong. Please try again.");
+          alert(`Failed to send message. Error: ${error.text || error.message || JSON.stringify(error)}`);
         }
       );
   };
