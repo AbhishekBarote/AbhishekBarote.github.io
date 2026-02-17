@@ -61,35 +61,34 @@ export const Interface = () => {
         },
         'NV69a_UPBUdZchKpd'
       )
-      .then(
-        () => {
-          // Success for notification, now send auto-reply
-          emailjs.send(
-            'service_Abhi456',
-            'template_2t5af3p',
-            {
-              name: form.name,
-              email: form.email,
-              title: "Portfolio Inquiry", 
-            },
-            'NV69a_UPBUdZchKpd'
-          );
+      .then(() => {
+        // Success for notification, now send auto-reply
+        return emailjs.send(
+          'service_Abhi456',
+          'template_2t5af3p',
+          {
+            name: form.name,
+            email: form.email,
+            title: "Portfolio Inquiry", 
+          },
+          'NV69a_UPBUdZchKpd'
+        );
+      })
+      .then(() => {
+        setLoading(false);
+        alert("Thank you. I will get back to you as soon as possible.");
 
-          setLoading(false);
-          alert("Thank you. I will get back to you as soon as possible.");
-
-          setForm({
-            name: "",
-            email: "",
-            message: "",
-          });
-        },
-        (error) => {
-          setLoading(false);
-          console.error(error);
-          alert(`Failed to send message. Error: ${error.text || error.message || JSON.stringify(error)}`);
-        }
-      );
+        setForm({
+          name: "",
+          email: "",
+          message: "",
+        });
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+        alert(`Failed to send message. Error: ${error.text || error.message || JSON.stringify(error)}`);
+      });
   };
 
   const [scrollProgress, setScrollProgress] = useState(0);
