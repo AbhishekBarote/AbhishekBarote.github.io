@@ -48,6 +48,7 @@ export const Interface = () => {
     e.preventDefault();
     setLoading(true);
 
+    console.log("Sending notification email...");
     emailjs
       .send(
         'service_Abhi456',
@@ -62,6 +63,7 @@ export const Interface = () => {
         'NV69a_UPBUdZchKpd'
       )
       .then(() => {
+        console.log("Notification sent. Sending auto-reply...");
         // Success for notification, now send auto-reply
         return emailjs.send(
           'service_Abhi456',
@@ -72,9 +74,16 @@ export const Interface = () => {
             title: "Portfolio Inquiry", 
           },
           'NV69a_UPBUdZchKpd'
-        );
+        ).catch(err => {
+             console.error("Auto-reply failed:", err);
+             // We don't want to fail the whole process if just auto-reply fails, 
+             // but we should warn the user or just log it.
+             // For debugging now, let's throw it to see the alert.
+             throw new Error(`Auto-reply failed: ${err.text || err.message}`);
+        });
       })
       .then(() => {
+        console.log("All emails sent successfully.");
         setLoading(false);
         alert("Thank you. I will get back to you as soon as possible.");
 
@@ -86,8 +95,11 @@ export const Interface = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.error(error);
-        alert(`Failed to send message. Error: ${error.text || error.message || JSON.stringify(error)}`);
+        console.error("Email error:", error);
+        // Distinguish if it was the first or second email based on the error message if possible, 
+        // or just show the error.
+        const errorMessage = error.message || error.text || JSON.stringify(error);
+        alert(`Failed to send message. \nDetails: ${errorMessage}`);
       });
   };
 
