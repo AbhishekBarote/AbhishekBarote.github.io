@@ -1,28 +1,57 @@
-
 import { motion } from "framer-motion";
-import { services, technologies, experiences, projects } from "../constants";
+import { navLinks, services, technologies, experiences, projects, education, certifications } from "../constants";
 import { useState, useEffect } from "react";
-
 import emailjs from '@emailjs/browser';
+import LogoLoop from './LogoLoop';
+import FloatingLines from './FloatingLines';
+import SpotlightCard from './SpotlightCard';
+import { FaRobot, FaBrain, FaCode, FaProjectDiagram } from 'react-icons/fa';
+
+const getServiceIcon = (title) => {
+    switch(title) {
+        case "AI Agent Developer": return <FaRobot size={48} color="#38bdf8" />;
+        case "LLM & RAG Engineer": return <FaBrain size={48} color="#38bdf8" />;
+        case "Full Stack AI Builder": return <FaCode size={48} color="#38bdf8" />;
+        case "Workflow Automation": return <FaProjectDiagram size={48} color="#38bdf8" />;
+        default: return <FaCode size={48} color="#38bdf8" />;
+    }
+};
+
+const Navbar = () => {
+    return (
+        <motion.nav 
+            className="nav-container"
+            initial={{ y: -100, x: "-50%", opacity: 0 }}
+            animate={{ y: 0, x: "-50%", opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+        >
+            <div className="nav-logo">
+                <span style={{color: '#fff'}}>ABHISHEK</span>
+            </div>
+            <div className="nav-links">
+                {navLinks.map((link) => (
+                    <a key={link.id} href={`#${link.id}`} className="nav-item">
+                        {link.title}
+                    </a>
+                ))}
+            </div>
+            <div>
+                <a href="#contact" className="sleek-pill">Connect →</a>
+            </div>
+        </motion.nav>
+    );
+};
 
 const Section = (props) => {
-  const { children } = props;
-
+  const { children, id, ...rest } = props;
   return (
     <motion.section
+      id={id}
       className="section-container"
-      initial={{
-        opacity: 0,
-        y: 50,
-      }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-        transition: {
-          duration: 1,
-          delay: 0.6,
-        },
-      }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }}
+      viewport={{ once: true, margin: "-100px" }}
+      {...rest}
     >
       <div className="section-content">
         {children}
@@ -32,11 +61,7 @@ const Section = (props) => {
 };
 
 export const Interface = () => {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -48,291 +73,279 @@ export const Interface = () => {
     e.preventDefault();
     setLoading(true);
 
-    console.log("Sending notification email...");
     emailjs
-      .send(
-        'service_Abhi456',
-        'template_66fneyc',
-        {
+      .send('service_Abhi456', 'template_66fneyc', {
           from_name: form.name,
           to_name: "Abhishek",
           from_email: form.email,
           to_email: "abhishekbarote@gmail.com",
           message: form.message,
-        },
-        'NV69a_UPBUdZchKpd'
-      )
+        }, 'NV69a_UPBUdZchKpd')
       .then(() => {
-        console.log("Notification sent. Sending auto-reply...");
-        // Success for notification, now send auto-reply
-        return emailjs.send(
-          'service_Abhi456',
-          'template_2t5af3p',
-          {
-            name: form.name,
-            email: form.email,
-            title: "Portfolio Inquiry",
-            message: form.message,
-          },
-          'NV69a_UPBUdZchKpd'
-        ).catch(err => {
-             console.error("Auto-reply failed:", err);
-             // We don't want to fail the whole process if just auto-reply fails, 
-             // but we should warn the user or just log it.
-             // For debugging now, let's throw it to see the alert.
-             throw new Error(`Auto-reply failed: ${err.text || err.message}`);
-        });
+        return emailjs.send('service_Abhi456', 'template_2t5af3p', {
+            name: form.name, email: form.email, title: "Portfolio Inquiry", message: form.message,
+          }, 'NV69a_UPBUdZchKpd').catch(err => { throw new Error(`Auto-reply failed: ${err.text || err.message}`); });
       })
       .then(() => {
-        console.log("All emails sent successfully.");
         setLoading(false);
         alert("Thank you. I will get back to you as soon as possible.");
-
-        setForm({
-          name: "",
-          email: "",
-          message: "",
-        });
+        setForm({ name: "", email: "", message: "" });
       })
       .catch((error) => {
         setLoading(false);
-        console.error("Email error:", error);
-        // Distinguish if it was the first or second email based on the error message if possible, 
-        // or just show the error.
-        const errorMessage = error.message || error.text || JSON.stringify(error);
-        alert(`Failed to send message. \nDetails: ${errorMessage}`);
+        alert(`Failed to send message.`);
       });
   };
 
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollTop;
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scroll = `${totalScroll / windowHeight}`;
-      setScrollProgress(Number(scroll));
-    }
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <div className="center-content">
-      {/* HUD HEADER */}
-      <div className="hud-header">
-        <div className="scifi-border p-4 glass">
-            <h3 className="hud-text">PLAYER: ABHISHEK</h3>
-            <p className="hud-subtext">CLASS: AI ENGINEER</p>
-        </div>
-        <div className="scifi-border p-4 glass">
-            <h3 className="hud-text">SYS: ONLINE</h3>
-            <p className="hud-subtext">LOC: PORTFOLIO_V1</p>
-        </div>
-      </div>
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Navbar />
 
-      {/* HUD FOOTER */}
-      <div className="hud-footer">
-         <div className="scifi-border glass w-full max-w-md p-2">
-            <div className="flex justify-between mb-1">
-                <span className="hud-text text-xs">XP PROGRESS</span>
-                <span className="hud-text text-xs">{Math.round(scrollProgress * 100)}%</span>
+      {/* HERO SECTION */}
+      <Section id="home" style={{ position: 'relative', width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: 0 }}>
+        {/* Floating Lines Background */}
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', opacity: 0.8 }}>
+          <FloatingLines
+            linesGradient={["#7dd3fc", "#38bdf8", "#0284c7"]}
+            animationSpeed={1}
+            interactive
+            bendRadius={5}
+            bendStrength={-0.5}
+            mouseDamping={0.05}
+            parallax
+            parallaxStrength={0.2}
+          />
+        </div>
+        {/* Fade to background color at the bottom */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '20vh', background: 'linear-gradient(to bottom, transparent, #070707)', zIndex: 1, pointerEvents: 'none' }} />
+        
+        <div className="hero-container">
+            {/* TEXT COLUMN */}
+            <div className="hero-text">
+                <h1 className="main-title">
+                    Abhishek Barote
+                </h1>
+                <p className="hero-subtitle">
+                    AI Research Engineer
+                </p>
+                <div className="hero-buttons">
+                    <a href="#about" className="sleek-pill" style={{ background: '#fff', color: '#000', padding: '0.75rem 2.5rem', fontWeight: 600, fontSize: '0.9rem' }}>
+                        About Me
+                    </a>
+                    <a href="#projects" className="sleek-pill-dark" style={{ padding: '0.75rem 2.5rem', fontSize: '0.9rem' }}>
+                        View Work
+                    </a>
+                </div>
             </div>
-            <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-                <div 
-                    className="bg-cyan-400 h-full transition-all duration-300 ease-out" 
-                    style={{ width: `${scrollProgress * 100}%` }}
-                ></div>
-            </div>
-         </div>
-      </div>
 
-      <Section>
-        <h1 className="hero-text">
-          Hi, I'm <span className="highlight">Abhishek</span>
-        </h1>
-        <p className="hero-subtext">
-          I build AI agents, RAG systems, and scalable software.
-        </p>
-        <motion.div
-           initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-            transition: {
-              duration: 1,
-              delay: 1.5,
-            },
-          }}
-        >
-          <a href="#contact" className="cta-btn">Contact Me</a>
-        </motion.div>
+            {/* IMAGE COLUMN */}
+            <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="hero-image-wrapper"
+            >
+                <div className="profile-image-container">
+                    <img 
+                        src="https://i.ibb.co/0jD6z8q4/Screenshot-2026-04-26-021256.png" 
+                        alt="Abhishek Barote" 
+                        className="profile-image" 
+                        referrerPolicy="no-referrer"
+                    />
+                </div>
+            </motion.div>
+        </div>
       </Section>
 
-      <Section>
-        <h2 className="section-title">About Me</h2>
+      {/* ABOUT APP/SERVICES */}
+      <Section id="about">
+        <div className="glass" style={{ padding: '3rem', marginBottom: '3rem' }}>
+            <h2 className="section-title" style={{ textAlign: 'center' }}>Professional Summary</h2>
+            <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.8', textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+                AI-focused Computer Engineering graduate with hands-on experience building production-ready AI applications, automation workflows, and open-source software. Strong foundation in backend development, API design, and workflow orchestration. Seeking roles in AI applications, automation, and software development.
+            </p>
+        </div>
+
         <div className="grid-container">
             {services.map((service, index) => (
-             <div key={service.title} className="card glass">
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <img src={service.icon} alt={service.title} style={{width: 50, height: 50, marginBottom: 10}} />
-                    <h3 className="section-title" style={{fontSize: '20px', textAlign: 'center', marginBottom: 0}}>
+             <SpotlightCard 
+                key={service.title} 
+                spotlightColor="rgba(56, 189, 248, 0.15)"
+             >
+                <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                    {getServiceIcon(service.title)}
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: '600', textAlign: 'center' }}>
                         {service.title}
                     </h3>
                 </div>
-            </div>
+            </SpotlightCard>
             ))}
         </div>
       </Section>
 
-      <Section>
-        <h2 className="section-title">Work Experience</h2>
-        <div className="flex-col">
-            {experiences.map((experience, index) => (
-            <div
-                key={index}
-                className="experience-card"
-            >
-                <div className="experience-header"> 
-                   <h3 style={{fontSize: '24px', fontWeight: 'bold'}}>{experience.title}</h3>
-                   <p style={{fontSize: '16px', fontWeight: '600', color: '#aaa6c3'}}>
-                    {experience.company_name}
-                    </p>
+      {/* EXPERIENCE */}
+      <Section id="experience">
+        <h2 className="section-title">Experience & Education</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {experiences.map((exp, index) => (
+                <motion.div key={index} className="experience-card glass" whileHover={{ scale: 1.01 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                            {exp.icon && (
+                                <div style={{ background: exp.iconBg || 'transparent', padding: '0.5rem 1rem', borderRadius: '0.5rem', width: '140px', height: '60px', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                                    <img src={exp.icon} alt={exp.company_name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                </div>
+                            )}
+                            <div>
+                                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{exp.title}</h3>
+                                <p style={{ fontSize: '1rem', color: '#888', margin: '0.25rem 0 0 0' }}>{exp.company_name}</p>
+                            </div>
+                        </div>
+                        <div className="sleek-pill-dark" style={{ fontSize: '0.75rem', padding: '0.25rem 0.75rem' }}>
+                            {exp.date}
+                        </div>
+                    </div>
+                    <ul style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {exp.points.map((point, i) => (
+                            <li key={i} style={{ color: '#aaa', fontSize: '0.9rem', display: 'flex', gap: '0.75rem' }}>
+                                <span style={{ color: '#fff' }}>•</span> {point}
+                            </li>
+                        ))}
+                    </ul>
+                </motion.div>
+            ))}
+            
+            {/* Education Block */}
+            <motion.div className="experience-card glass" whileHover={{ scale: 1.01 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div>
+                        <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{education.degree}</h3>
+                        <p style={{ fontSize: '1rem', color: '#888', marginTop: '0.25rem' }}>{education.institution}</p>
+                    </div>
+                    <div className="sleek-pill-dark" style={{ fontSize: '0.75rem', padding: '0.25rem 0.75rem' }}>
+                        {education.date}
+                    </div>
                 </div>
-                
-                <p style={{fontSize: '14px', color: '#aaa6c3', opacity: 0.6, marginTop: '0.5rem'}}>
-                    {experience.date}
-                </p>
-
-                <ul style={{marginTop: '1.25rem', paddingLeft: '1.25rem', listStyle: 'disc'}}>
-                    {experience.points.map((point, index) => (
-                    <li
-                        key={`experience-point-${index}`}
-                        style={{fontSize: '14px', paddingLeft: '0.25rem', marginBottom: '0.5rem'}}
-                    >
-                        {point}
-                    </li>
-                    ))}
-                </ul>
-            </div>
-            ))}
+                <p style={{ color: '#aaa', fontSize: '0.9rem', marginTop: '1rem' }}>{education.gpa}</p>
+            </motion.div>
         </div>
       </Section>
 
-      <Section>
-        <h2 className="section-title">Projects</h2>
+      {/* PROJECTS */}
+      <Section id="projects">
+        <h2 className="section-title">Featured Projects</h2>
         <div className="grid-container">
         {projects.map((project, index) => (
-          <div key={`project-${index}`} className="project-card glass">
+          <motion.div key={index} className="project-card glass" whileHover={{ y: -5 }}>
             <div className="project-image-container">
-              <img
-                src={project.image}
-                alt={project.name}
-                className="project-image"
-              />
-              <div className="project-links">
-                <div
-                  onClick={() => window.open(project.source_code_link, "_blank")}
-                  className="icon-btn"
-                >
-                  <img
-                    src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg"
-                    alt="github"
-                    style={{width: '50%', height: '50%', filter: 'invert(1)'}}
-                  />
-                </div>
+              <img src={project.image} alt={project.name} className="project-image" />
+              <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.5rem' }}>
+                  <a href={project.source_code_link} target="_blank" className="sleek-pill-dark" style={{ padding: '0.25rem', borderRadius: '50%', width: '32px', height: '32px' }}>
+                     <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg" alt="github" style={{ width: '100%', height: '100%', filter: 'invert(1)' }} />
+                  </a>
               </div>
             </div>
-
-            <div style={{padding: '1.25rem'}}>
-              <h3 style={{fontSize: '24px', fontWeight: 'bold'}}>{project.name}</h3>
-              <p style={{marginTop: '0.5rem', fontSize: '14px', color: '#aaa6c3'}}>{project.description}</p>
-            </div>
-
-            <div style={{padding: '0 1.25rem 1.25rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap'}}>
-              {project.tags.map((tag) => (
-                <p
-                  key={tag.name}
-                  style={{fontSize: '14px'}}
-                  className={tag.color} 
-                >
-                  #{tag.name}
-                </p>
-              ))}
-            </div>
-             {project.live_link && (
-                 <div style={{padding: '0 1.25rem 1.25rem'}}>
-                    <a href={project.live_link} target="_blank" style={{color: '#60a5fa', fontSize: '14px'}}>View Live Demo</a>
+            <div style={{ padding: '1.5rem' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{project.name}</h3>
+              <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: '#aaa', lineHeight: '1.6' }}>{project.description}</p>
+              <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {project.tags.map((tag) => (
+                  <span key={tag.name} style={{ fontSize: '0.75rem', background: 'rgba(255,255,255,0.05)', padding: '0.2rem 0.6rem', borderRadius: '4px', color: '#888' }}>
+                    #{tag.name}
+                  </span>
+                ))}
+              </div>
+              {project.live_link && (
+                 <div style={{ marginTop: '1.5rem' }}>
+                    <a href={project.live_link} target="_blank" className="sleek-pill" style={{ width: '100%', padding: '0.5rem', background: 'linear-gradient(45deg, #1f2937, #374151)', border: '1px solid #4b5563', textAlign: 'center', display: 'block' }}>View Live Instance</a>
                  </div>
-             )}
-          </div>
-        ))}
-      </div>
-      </Section>
-
-       <Section>
-        <h2 className="section-title">Skills</h2>
-        <div className="skills-container">
-          {technologies.map((tech) => (
-            <div key={tech.name} className="skill-item glass">
-               <img src={tech.icon} alt={tech.name} style={{width: '40px', height: '40px', marginBottom: '0.5rem'}} />
-               <span style={{fontSize: '12px', fontWeight: '600'}}>{tech.name}</span>
+              )}
             </div>
-          ))}
+          </motion.div>
+        ))}
         </div>
       </Section>
 
-       <Section id="contact">
-        <h2 className="section-title">Contact</h2>
-        <div className="contact-form glass">
-            <p style={{fontSize: '18px', fontWeight: '500', marginBottom: '1rem'}}>Get in touch</p>
+       {/* SKILLS */}
+       <Section id="skills">
+        <h2 className="section-title" style={{ textAlign: 'center' }}>Core Technologies</h2>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '1200px', margin: '0 auto', overflow: 'hidden' }}>
+          <LogoLoop
+            logos={technologies}
+            speed={60}
+            direction="left"
+            gap={40}
+            hoverSpeed={0}
+            fadeOut={true}
+            fadeOutColor="transparent"
+            ariaLabel="Core Technologies Loop"
+            renderItem={(tech, key) => (
+              <div className="glass" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', minWidth: '140px', transition: 'transform 0.3s ease' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+                 <img src={tech.icon} alt={tech.name} style={{ width: '40px', height: '40px' }} />
+                 <span style={{ fontSize: '0.8rem', fontWeight: '500', color: '#ccc' }}>{tech.name}</span>
+              </div>
+            )}
+          />
+        </div>
+      </Section>
+
+      {/* CONTACT */}
+      <div style={{ position: 'relative', width: '100%', overflow: 'hidden', paddingBottom: '6rem' }}>
+        {/* Floating Lines Background for Footer (Reversed/Rotated) */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50vh', zIndex: 0, pointerEvents: 'none', opacity: 0.6, transform: 'rotate(180deg)' }}>
+          <FloatingLines
+            linesGradient={["#0284c7", "#38bdf8", "#7dd3fc"]}
+            animationSpeed={0.8}
+            interactive
+            bendRadius={5}
+            bendStrength={-0.5} 
+            mouseDamping={0.05}
+            parallax
+            parallaxStrength={0.2}
+          />
+        </div>
+        {/* Gradient to blend the top edge of the lines into black background */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50vh', background: 'linear-gradient(to bottom, #070707 0%, transparent 100%)', zIndex: 1, pointerEvents: 'none' }} />
+
+        <Section id="contact" style={{ position: 'relative', zIndex: 2 }}>
+          <div className="glass" style={{ padding: '3rem', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+            <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '1rem' }}>Initialize Contact</h2>
+            <p style={{ textAlign: 'center', color: '#888', marginBottom: '2rem' }}>Open a channel to discuss opportunities.</p>
             <form className="form-group" onSubmit={handleSubmit}>
-               <label className="form-group">
-                    <span style={{fontWeight: '500'}}>Your Name</span>
-                    <input 
-                        type="text" 
-                        name="name" 
-                        value={form.name} 
-                        onChange={handleChange}
-                        placeholder="What's your name?" 
-                        className="form-input" 
-                        required
-                    />
-               </label>
-               <label className="form-group">
-                    <span style={{fontWeight: '500'}}>Your Email</span>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        value={form.email}
-                        onChange={handleChange}
-                        placeholder="What's your email?" 
-                        className="form-input" 
-                        required
-                    />
-               </label>
-                <label className="form-group">
-                    <span style={{fontWeight: '500'}}>Your Message</span>
-                    <textarea 
-                        rows={7} 
-                        name="message" 
-                        value={form.message}
-                        onChange={handleChange}
-                        placeholder="What do you want to say?" 
-                        className="form-input" 
-                        required
-                    />
-               </label>
-               <button type="submit" disabled={loading} className="cta-btn">
-                  {loading ? "Sending..." : "Send"}
+                <input 
+                    type="text" 
+                    name="name" 
+                    value={form.name} 
+                    onChange={handleChange}
+                    placeholder="Identification (Name)" 
+                    className="form-input" 
+                    required
+                />
+                <input 
+                    type="email" 
+                    name="email" 
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="Comms Link (Email)" 
+                    className="form-input" 
+                    required
+                />
+                <textarea 
+                    rows={5} 
+                    name="message" 
+                    value={form.message}
+                    onChange={handleChange}
+                    placeholder="Transmit Message..." 
+                    className="form-input" 
+                    required
+                />
+               <button type="submit" disabled={loading} className="sleek-pill" style={{ marginTop: '1rem', padding: '0.75rem', width: '100%', background: 'linear-gradient(45deg, #059669, #10b981)', border: 'none', fontWeight: 'bold', letterSpacing: '1px' }}>
+                  {loading ? "Transmitting..." : "Send Transmission →"}
                </button>
             </form>
         </div>
       </Section>
-      <div style={{ paddingBottom: '4rem' }} />
+      </div>
     </div>
   );
 };
