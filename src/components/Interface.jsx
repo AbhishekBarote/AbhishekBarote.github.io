@@ -5,6 +5,9 @@ import emailjs from '@emailjs/browser';
 import LogoLoop from './LogoLoop';
 import FloatingLines from './FloatingLines';
 import SpotlightCard from './SpotlightCard';
+import TiltedCard from './TiltedCard';
+import TextPressure from './TextPressure';
+import RotatingText from './RotatingText';
 import { FaRobot, FaBrain, FaCode, FaProjectDiagram } from 'react-icons/fa';
 
 const getServiceIcon = (title) => {
@@ -122,12 +125,29 @@ export const Interface = () => {
         <div className="hero-container">
             {/* TEXT COLUMN */}
             <div className="hero-text">
-                <h1 className="main-title">
-                    Abhishek Barote
-                </h1>
-                <p className="hero-subtitle">
-                    AI Research Engineer
-                </p>
+                <div style={{ position: 'relative', width: '100%', marginBottom: '1rem', minHeight: '80px', display: 'flex', alignItems: 'center' }}>
+                  <TextPressure
+                    text="Abhishek Barote"
+                    flex
+                    alpha={false}
+                    stroke={false}
+                    width
+                    weight
+                    italic
+                    textColor="#ffffff"
+                    strokeColor="#5227FF"
+                    minFontSize={56}
+                  />
+                </div>
+                <div className="hero-subtitle" style={{ minHeight: '30px' }}>
+                    <RotatingText 
+                        texts={[
+                            "Artificial Intelligence Engineer",
+                            "ML Engineer",
+                            "Data Engineer"
+                        ]} 
+                    />
+                </div>
                 <div className="hero-buttons">
                     <a href="#about" className="sleek-pill" style={{ background: '#fff', color: '#000', padding: '0.75rem 2.5rem', fontWeight: 600, fontSize: '0.9rem' }}>
                         About Me
@@ -145,12 +165,23 @@ export const Interface = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="hero-image-wrapper"
             >
-                <div className="profile-image-container">
-                    <img 
-                        src="https://i.ibb.co/0jD6z8q4/Screenshot-2026-04-26-021256.png" 
-                        alt="Abhishek Barote" 
-                        className="profile-image" 
-                        referrerPolicy="no-referrer"
+                <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                    <TiltedCard
+                        imageSrc="https://i.ibb.co/0jD6z8q4/Screenshot-2026-04-26-021256.png"
+                        altText="Abhishek Barote"
+                        captionText="Abhishek Barote"
+                        containerHeight="400px"
+                        containerWidth="400px"
+                        imageHeight="400px"
+                        imageWidth="400px"
+                        rotateAmplitude={12}
+                        scaleOnHover={1.05}
+                        displayOverlayContent
+                        overlayContent={
+                            <p style={{ fontWeight: 'bold', fontSize: '1.5rem', textShadow: '0 4px 8px rgba(0,0,0,0.8)' }}>
+                                Abhishek Barote
+                            </p>
+                        }
                     />
                 </div>
             </motion.div>
