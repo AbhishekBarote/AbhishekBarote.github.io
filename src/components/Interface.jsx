@@ -192,7 +192,7 @@ export const Interface = () => {
       <Section id="about">
         <div className="glass" style={{ padding: '3rem', marginBottom: '3rem' }}>
             <h2 className="section-title" style={{ textAlign: 'center' }}>Professional Summary</h2>
-            <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.8', textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+            <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.8', textAlign: 'center', maxWidth: '1200px', margin: '0 auto' }}>
                 AI-focused Computer Engineering graduate with hands-on experience building production-ready AI applications, automation workflows, and open-source software. Strong foundation in backend development, API design, and workflow orchestration. Seeking roles in AI applications, automation, and software development.
             </p>
         </div>
@@ -300,7 +300,7 @@ export const Interface = () => {
        {/* SKILLS */}
        <Section id="skills">
         <h2 className="section-title" style={{ textAlign: 'center' }}>Core Technologies</h2>
-        <div style={{ position: 'relative', width: '100%', maxWidth: '1200px', margin: '0 auto', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '100%', margin: '0 auto', overflow: 'hidden' }}>
           <LogoLoop
             logos={technologies}
             speed={60}
@@ -317,6 +317,53 @@ export const Interface = () => {
               </div>
             )}
           />
+        </div>
+      </Section>
+
+      {/* CERTIFICATIONS */}
+      <Section id="certifications">
+        <h2 className="section-title">Certifications</h2>
+        <div className="cert-grid">
+            {certifications.map((cert, index) => (
+                <motion.div key={index} className="project-card glass" whileHover={{ y: -5 }} style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '1.5rem', backgroundColor: '#0a0a0a', borderTopLeftRadius: '1.5rem', borderTopRightRadius: '1.5rem' }}>
+                        <div style={{ width: '100%', aspectRatio: '1.414' }}>
+                            <TiltedCard
+                                imageSrc={cert.image}
+                                altText={cert.title}
+                                containerWidth="100%"
+                                containerHeight="100%"
+                                imageWidth="100%"
+                                imageHeight="100%"
+                                rotateAmplitude={10}
+                                scaleOnHover={1.04}
+                                borderRadius="8px"
+                                objectFit="contain"
+                            />
+                        </div>
+                    </div>
+                    <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', height: '100%' }}>
+                        <div>
+                            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', lineHeight: '1.4' }}>{cert.title}</h3>
+                            <p style={{ fontSize: '0.9rem', color: '#888', marginTop: '0.25rem' }}>{cert.issuer}</p>
+                        </div>
+                        
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
+                            <span className="sleek-pill-dark" style={{ fontSize: '0.75rem', padding: '0.25rem 0.75rem' }}>
+                                {cert.date}
+                            </span>
+                        </div>
+                        
+                        {cert.link && (
+                            <div style={{ marginTop: '1rem' }}>
+                                <a href={cert.link} target="_blank" rel="noopener noreferrer" className="sleek-pill" style={{ width: '100%', padding: '0.5rem', background: 'linear-gradient(45deg, #1f2937, #374151)', border: '1px solid #4b5563', textAlign: 'center', display: 'block', fontSize: '0.9rem' }}>
+                                    View Credential
+                                </a>
+                            </div>
+                        )}
+                    </div>
+                </motion.div>
+            ))}
         </div>
       </Section>
 
@@ -339,7 +386,7 @@ export const Interface = () => {
         <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50vh', background: 'linear-gradient(to bottom, #070707 0%, transparent 100%)', zIndex: 1, pointerEvents: 'none' }} />
 
         <Section id="contact" style={{ position: 'relative', zIndex: 2 }}>
-          <div className="glass" style={{ padding: '3rem', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+          <div className="glass" style={{ padding: '3rem', width: '100%', maxWidth: '900px', margin: '0 auto' }}>
             <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '1rem' }}>Initialize Contact</h2>
             <p style={{ textAlign: 'center', color: '#888', marginBottom: '2rem' }}>Open a channel to discuss opportunities.</p>
             <form className="form-group" onSubmit={handleSubmit}>

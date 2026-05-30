@@ -22,6 +22,10 @@ export const navLinks = [
         title: "Skills",
     },
     {
+        id: "certifications",
+        title: "Certifications",
+    },
+    {
         id: "contact",
         title: "Contact Me",
     },
@@ -164,17 +168,40 @@ const education = {
 
 const certifications = [
     {
-        title: "Software Engineer Certification",
+        title: "Certified Software Engineer",
         issuer: "HackerRank",
         date: "Jun 2025",
-        link: "https://www.hackerrank.com/certificates/iframe/f1c542a00979"
+        link: "https://www.hackerrank.com/certificates/iframe/f1c542a00979",
+        image: "/image.png"
     },
     {
         title: "Career Essentials in Generative AI",
         issuer: "Microsoft & LinkedIn",
-        date: "2025",
-        link: "https://drive.google.com/file/d/1oKMVI9se_NFO2Uc9co5EfPTaTwRzKX4J/view"
+        date: "Sep 2025",
+        link: "https://drive.google.com/file/d/1YdFAg6r_yXO1jH33QREMHpIMp_vJNcxN/view?usp=sharing",
+        image: "/image4.png"
+    },
+    {
+        title: "Deloitte Australia - Data Analytics Job Simulation",
+        issuer: "Forage",
+        date: "Jun 2025",
+        link: "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/9PBTqmSxAf6zZTseP/io9DzWKe3PTsiS6GG_9PBTqmSxAf6zZTseP_4ExjbEoXXCC56NDBK_1749062219741_completion_certificate.pdf",
+        image: "/image.png"
+    },
+    {
+        title: "Career Essentials in Cybersecurity",
+        issuer: "Microsoft & LinkedIn",
+        date: "Jun 2024",
+        link: "https://drive.google.com/file/d/1fN2Rrb2CFZc7Qgh10Xk6xXC06g_idOcZ/view?usp=sharing",
+        image: "/image2.png"
+    },
+    {
+        title: "Generative AI - Art of the Possible",
+        issuer: "AWS Training & Certification",
+        date: "May 2026",
+        link: "https://drive.google.com/file/d/1IKnXFIDVzcg89jb6-N5d-qGL8LIwykan/view?usp=sharing",
+        image: "/image3.png"
     }
-]
+];
 
 export { services, technologies, experiences, projects, education, certifications };

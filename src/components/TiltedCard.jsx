@@ -13,6 +13,8 @@ export default function TiltedCard({
   scaleOnHover = 1.05,
   displayOverlayContent,
   overlayContent,
+  borderRadius = "50%",
+  objectFit = "cover",
 }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -82,8 +84,8 @@ export default function TiltedCard({
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover",
-            borderRadius: "50%",
+            objectFit: objectFit,
+            borderRadius: borderRadius,
             boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
           }}
         />
